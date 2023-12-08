@@ -17,7 +17,11 @@ dependencies:
   path: ^1.8.0 # update to `1.8.1` causes #79
   path_provider: ^2.0.12
   transparent_image: ^2.0.1 # show fade-in placeholder in thumbnails generation
-  video_player: ^2.6.1
+  video_player: 
+    git: 
+      url: https://github.com/Ahlisen/packages
+      path: packages/video_player/video_player
+      ref: 66fd7b0fae113d2666369a91d729b7f764ab5278
   video_thumbnail: ^0.5.3
 
 dev_dependencies:
