@@ -18,7 +18,10 @@ dependencies:
   fraction: ^4.1.4
   image_picker: ^0.8.9
   path: ^1.8.2
-  video_player: ^2.6.1
+  video_player:
+    git: 
+      url: https://github.com/Ahlisen/packages
+      path: packages/video_player/video_player
   ffmpeg_kit_flutter_min: ^5.1.0
 
 flutter:
