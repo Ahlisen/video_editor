@@ -5,6 +5,7 @@ description: |
  Supports crop, trim, rotation and cover selection.
  Provides commands to run in order to export the video or cover.
 repository: https://github.com/LeGoffMael/video_editor
+publish_to: none
 
 environment:
   flutter: ">=3.0.0"
@@ -22,7 +23,9 @@ dependencies:
       url: https://github.com/Ahlisen/packages
       path: packages/video_player/video_player
       #ref: 66fd7b0fae113d2666369a91d729b7f764ab5278
-  video_thumbnail: ^0.5.3
+  get_thumbnail_video:
+    git:
+      url: https://github.com/adekmaulana/video_thumbnail.git
 
 dev_dependencies:
   flutter_test:
