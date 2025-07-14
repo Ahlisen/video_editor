@@ -22,7 +22,6 @@ dependencies:
     git: 
       url: https://github.com/Ahlisen/packages
       path: packages/video_player/video_player
-  ffmpeg_kit_flutter_min: ^5.1.0
 
 flutter:
   uses-material-design: true

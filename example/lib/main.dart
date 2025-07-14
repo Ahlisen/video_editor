@@ -14,7 +14,7 @@ void main() => runApp(
         theme: ThemeData(
           primarySwatch: Colors.grey,
           brightness: Brightness.dark,
-          tabBarTheme: const TabBarTheme(
+          tabBarTheme: const TabBarThemeData(
             indicator: UnderlineTabIndicator(
               borderSide: BorderSide(color: Colors.white),
             ),
@@ -108,7 +108,7 @@ class _VideoEditorState extends State<VideoEditor> {
     _exportingProgress.dispose();
     _isExporting.dispose();
     _controller.dispose();
-    ExportService.dispose();
+    // ExportService.dispose();
     super.dispose();
   }
 
@@ -135,22 +135,22 @@ class _VideoEditorState extends State<VideoEditor> {
       // },
     );
 
-    await ExportService.runFFmpegCommand(
-      await config.getExecuteConfig(),
-      onProgress: (stats) {
-        _exportingProgress.value = config.getFFmpegProgress(stats.getTime());
-      },
-      onError: (e, s) => _showErrorSnackBar("Error on export video :("),
-      onCompleted: (file) {
-        _isExporting.value = false;
-        if (!mounted) return;
+    // await ExportService.runFFmpegCommand(
+    //   await config.getExecuteConfig(),
+    //   onProgress: (stats) {
+    //     // _exportingProgress.value = config.getFFmpegProgress(stats.getTime());
+    //   },
+    //   onError: (e, s) => _showErrorSnackBar("Error on export video :("),
+    //   onCompleted: (file) {
+    //     _isExporting.value = false;
+    //     if (!mounted) return;
 
-        showDialog(
-          context: context,
-          builder: (_) => VideoResultPopup(video: file),
-        );
-      },
-    );
+    //     showDialog(
+    //       context: context,
+    //       builder: (_) => VideoResultPopup(video: file),
+    //     );
+    //   },
+    // );
   }
 
   void _exportCover() async {
@@ -161,18 +161,18 @@ class _VideoEditorState extends State<VideoEditor> {
       return;
     }
 
-    await ExportService.runFFmpegCommand(
-      execute,
-      onError: (e, s) => _showErrorSnackBar("Error on cover exportation :("),
-      onCompleted: (cover) {
-        if (!mounted) return;
+    // await ExportService.runFFmpegCommand(
+    //   execute,
+    //   onError: (e, s) => _showErrorSnackBar("Error on cover exportation :("),
+    //   onCompleted: (cover) {
+    //     if (!mounted) return;
 
-        showDialog(
-          context: context,
-          builder: (_) => CoverResultPopup(cover: cover),
-        );
-      },
-    );
+    //     showDialog(
+    //       context: context,
+    //       builder: (_) => CoverResultPopup(cover: cover),
+    //     );
+    //   },
+    // );
   }
 
   @override
@@ -410,18 +410,10 @@ class _VideoEditorState extends State<VideoEditor> {
           );
         },
       ),
-      Container(
+      SizedBox(
+        height: height,
         width: MediaQuery.of(context).size.width,
-        margin: EdgeInsets.symmetric(vertical: height / 4),
-        child: TrimSlider(
-          controller: _controller,
-          height: height,
-          horizontalMargin: height / 4,
-          child: TrimTimeline(
-            controller: _controller,
-            padding: const EdgeInsets.only(top: 10),
-          ),
-        ),
+        child: RegularSlider(controller: _controller, height: height),
       )
     ];
   }

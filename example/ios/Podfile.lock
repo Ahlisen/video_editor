@@ -1,11 +1,4 @@
 PODS:
-  - ffmpeg-kit-ios-min (5.1)
-  - ffmpeg_kit_flutter_min (5.1.0):
-    - ffmpeg_kit_flutter_min/min (= 5.1.0)
-    - Flutter
-  - ffmpeg_kit_flutter_min/min (5.1.0):
-    - ffmpeg-kit-ios-min (= 5.1)
-    - Flutter
   - Flutter (1.0.0)
   - image_picker_ios (0.0.1):
     - Flutter
@@ -29,7 +22,6 @@ PODS:
     - libwebp
 
 DEPENDENCIES:
-  - ffmpeg_kit_flutter_min (from `.symlinks/plugins/ffmpeg_kit_flutter_min/ios`)
   - Flutter (from `Flutter`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
@@ -38,12 +30,9 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - ffmpeg-kit-ios-min
     - libwebp
 
 EXTERNAL SOURCES:
-  ffmpeg_kit_flutter_min:
-    :path: ".symlinks/plugins/ffmpeg_kit_flutter_min/ios"
   Flutter:
     :path: Flutter
   image_picker_ios:
@@ -56,15 +45,13 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/video_thumbnail/ios"
 
 SPEC CHECKSUMS:
-  ffmpeg-kit-ios-min: 3748f7726cd539e308090371a9d572d1a9dfaf7e
-  ffmpeg_kit_flutter_min: 03876cb5ff5f7cf493cbcef07fa738ae423e009c
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  image_picker_ios: c560581cceedb403a6ff17f2f816d7fea1421fc1
+  image_picker_ios: 7fe1ff8e34c1790d6fff70a32484959f563a928a
   libwebp: 60305b2e989864154bd9be3d772730f08fc6a59c
-  path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
-  video_player_avfoundation: 7c6c11d8470e1675df7397027218274b6d2360b3
-  video_thumbnail: c4e2a3c539e247d4de13cd545344fd2d26ffafd1
+  path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
+  video_player_avfoundation: 2cef49524dd1f16c5300b9cd6efd9611ce03639b
+  video_thumbnail: b637e0ad5f588ca9945f6e2c927f73a69a661140
 
 PODFILE CHECKSUM: ccd901b1465efa56fa30557fdc5ae4eddcc3f504
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2
