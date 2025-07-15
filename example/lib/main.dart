@@ -86,7 +86,7 @@ class _VideoEditorState extends State<VideoEditor> {
   late final VideoEditorController _controller = VideoEditorController.file(
     widget.file,
     minDuration: const Duration(seconds: 1),
-    maxDuration: const Duration(seconds: 10),
+    maxDuration: const Duration(seconds: 20),
   );
 
   @override
