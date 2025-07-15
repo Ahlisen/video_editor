@@ -23,14 +23,12 @@ class _RegularSliderState extends State<RegularSlider> {
   void initState() {
     super.initState();
     _indicatorPosition = widget.controller.trimPosition;
-    // Removed scroll-related initialization
     widget.controller.addListener(_syncIndicator);
   }
 
   @override
   void dispose() {
     widget.controller.removeListener(_syncIndicator);
-    // Removed scroll controller dispose
     super.dispose();
   }
 
@@ -41,25 +39,26 @@ class _RegularSliderState extends State<RegularSlider> {
   }
 
   void _onPanUpdate(DragUpdateDetails details) {
-    // Calculate thumbnail width similar to ThumbnailSlider
     final double thumbnailWidth = widget.height *
         (widget.controller.video.value.aspectRatio == 0
             ? 1.0
             : widget.controller.video.value.aspectRatio);
 
-    // Linearly interpolate so indicator can reach all durations
     final double sliderWidth = _sliderLayout.width;
     double localDx = details.localPosition.dx;
-    // Map localDx in [0, sliderWidth] to positionRatio in [0, 1]
     double positionRatio =
         ((localDx - (thumbnailWidth / 2)) / (sliderWidth - thumbnailWidth))
             .clamp(0.0, 1.0);
-    print('Position ratio: $positionRatio');
+
+    final int trimStartMs = widget.controller.startTrim.inMilliseconds;
+    final int trimEndMs = widget.controller.endTrim.inMilliseconds;
+    final int trimRangeMs = trimEndMs - trimStartMs;
+    final int seekToMs = trimStartMs + (trimRangeMs * positionRatio).round();
+
     setState(() {
       _indicatorPosition = positionRatio;
     });
-    final duration = widget.controller.videoDuration * positionRatio;
-    widget.controller.video.seekTo(duration);
+    widget.controller.video.seekTo(Duration(milliseconds: seekToMs));
   }
 
   @override
@@ -72,13 +71,11 @@ class _RegularSliderState extends State<RegularSlider> {
             constraints.maxWidth - horizontalMargin * 2, constraints.maxHeight);
         _sliderLayout = sliderLayout;
 
-        // Calculate thumbnail width similar to ThumbnailSlider
         final double thumbnailWidth = height *
             (widget.controller.video.value.aspectRatio == 0
                 ? 1.0
                 : widget.controller.video.value.aspectRatio);
 
-        // Get TrimSliderStyle from controller
         final TrimSliderStyle style = widget.controller.trimStyle;
         return ClipRRect(
           borderRadius: BorderRadius.circular(style.borderRadius),
