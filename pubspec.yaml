@@ -21,7 +21,6 @@ dependencies:
     git: 
       url: https://github.com/Ahlisen/packages
       path: packages/video_player/video_player
-      ref: 47bd256ed66ce42900513ec9ff68aba64ab60d88
   video_thumbnail: ^0.5.3
 
 dev_dependencies:
