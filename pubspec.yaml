@@ -21,7 +21,7 @@ dependencies:
     git: 
       url: https://github.com/Ahlisen/packages
       path: packages/video_player/video_player
-  video_thumbnail: ^0.5.3
+  get_video_thumbnail: ^0.7.0
 
 dev_dependencies:
   flutter_test:

@@ -154,10 +154,6 @@ class _VideoEditorState extends State<VideoEditor> {
   void _exportCover() async {
     final config = CoverFFmpegVideoEditorConfig(_controller);
     final execute = await config.getExecuteConfig();
-    if (execute == null) {
-      _showErrorSnackBar("Error on cover exportation initialization.");
-      return;
-    }
 
     // await ExportService.runFFmpegCommand(
     //   execute,
