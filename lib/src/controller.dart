@@ -1,8 +1,9 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:video_editor/src/models/cover_data.dart';
 import 'package:video_editor/src/utils/helpers.dart';
 import 'package:video_editor/src/utils/thumbnails.dart';
-import 'package:video_editor/src/models/cover_data.dart';
 import 'package:video_editor/video_editor.dart';
 import 'package:video_player/video_player.dart';
 
@@ -40,6 +41,9 @@ class VideoEditorController extends ChangeNotifier {
   /// Video from [File].
   final File file;
 
+  /// View type to be used by the [VideoPlayerController]
+  final VideoViewType videoViewType;
+
   /// Constructs a [VideoEditorController] that edits a video from a file.
   ///
   /// The [file] argument must not be null.
@@ -51,11 +55,15 @@ class VideoEditorController extends ChangeNotifier {
     this.trimThumbnailsQuality = 10,
     this.coverStyle = const CoverSelectionStyle(),
     this.cropStyle = const CropGridStyle(),
+    this.videoViewType = VideoViewType.textureView,
     TrimSliderStyle? trimStyle,
-  })  : _video = VideoPlayerController.file(File(
-          // https://github.com/flutter/flutter/issues/40429#issuecomment-549746165
-          Platform.isIOS ? Uri.encodeFull(file.path) : file.path,
-        )),
+  })  : _video = VideoPlayerController.file(
+          File(
+            // https://github.com/flutter/flutter/issues/40429#issuecomment-549746165
+            Platform.isIOS ? Uri.encodeFull(file.path) : file.path,
+          ),
+          viewType: videoViewType,
+        ),
         trimStyle = trimStyle ?? TrimSliderStyle(),
         assert(maxDuration > minDuration,
             'The maximum duration must be bigger than the minimum duration');
@@ -101,7 +109,9 @@ class VideoEditorController extends ChangeNotifier {
 
   /// Get the [VideoPlayerController.value.size]
   Size get videoDimension => _video.value.size;
+
   double get videoWidth => videoDimension.width;
+
   double get videoHeight => videoDimension.height;
 
   /// The [minTrim] param is the minimum position of the trimmed area on the slider
@@ -147,6 +157,7 @@ class VideoEditorController extends ChangeNotifier {
 
   /// The [preferredCropAspectRatio] param is the selected aspect ratio (9:16, 3:4, 1:1, ...)
   double? get preferredCropAspectRatio => _preferredCropAspectRatio;
+
   set preferredCropAspectRatio(double? value) {
     if (preferredCropAspectRatio == value) return;
     _preferredCropAspectRatio = value;
@@ -319,6 +330,7 @@ class VideoEditorController extends ChangeNotifier {
   ///
   /// `true` if the trimming values are curently getting updated
   bool get isTrimming => _isTrimming;
+
   set isTrimming(bool value) {
     _isTrimming = value;
     if (!value) {
