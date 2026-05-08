@@ -219,7 +219,12 @@ class VideoEditorController extends ChangeNotifier {
     }
 
     _video.addListener(_videoListener);
-    _video.setLooping(true);
+    // Native VideoPlayer looping races _videoListener on iOS: on end-of-stream
+    // AVFoundation seeks to 0 and resumes, while our listener also seeks to
+    // _trimStart, leaving the player either paused or thrashing seeks. We
+    // drive looping ourselves in _videoListener instead, pre-empting the
+    // natural end so AVFoundation never enters its completed state.
+    _video.setLooping(false);
 
     // if no [maxDuration] param given, maxDuration is the videoDuration
     maxDuration = maxDuration == Duration.zero ? videoDuration : maxDuration;
@@ -247,11 +252,40 @@ class VideoEditorController extends ChangeNotifier {
     super.dispose();
   }
 
+  bool _isLoopingBack = false;
+
   void _videoListener() {
-    final position = videoPosition;
-    if (position < _trimStart || position > _trimEnd) {
-      _video.seekTo(_trimStart);
-    }
+    if (_isLoopingBack) return;
+    final value = _video.value;
+    if (!value.isInitialized) return;
+    final position = value.position;
+    final duration = value.duration;
+
+    // Tolerance below _trimStart absorbs sub-frame position drift after a
+    // seek lands on iOS — without it the listener can re-fire seekTo on
+    // every position tick and trap playback in a tight re-seek loop.
+    const tolerance = Duration(milliseconds: 50);
+    // Pre-empt the natural end so the underlying player never enters its
+    // completed/end-of-stream state. Necessary when _trimEnd == videoDuration
+    // because position is never strictly greater than duration.
+    const endLookahead = Duration(milliseconds: 100);
+
+    final beforeStart = position < _trimStart - tolerance;
+    final pastEnd = position > _trimEnd;
+    final approachingNaturalEnd =
+        duration > Duration.zero && duration - position <= endLookahead;
+    if (!(beforeStart || pastEnd || approachingNaturalEnd)) return;
+
+    _isLoopingBack = true;
+    final wasPlaying = value.isPlaying || value.isCompleted;
+    () async {
+      try {
+        await _video.seekTo(_trimStart);
+        if (wasPlaying) await _video.play();
+      } finally {
+        _isLoopingBack = false;
+      }
+    }();
   }
 
   //----------//
