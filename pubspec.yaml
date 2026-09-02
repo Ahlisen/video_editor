@@ -20,7 +20,7 @@ dependencies:
   transparent_image: ^2.0.1 # show fade-in placeholder in thumbnails generation
   video_player:
     git:
-      url: https://github.com/Ahlisen/packages
+      url: https://github.com/alsterverse/video_player_packages
       path: packages/video_player/video_player
   get_video_thumbnail: ^0.9.0
 
